@@ -1,0 +1,25 @@
+{
+  "name": "pogchamp",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Each day brings a new PogChamp emote to Twitch. View the latest PogChamp of the Day at pogchamp.today",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "npm run build:fetch-emote && npm run dev:parcel",
+    "dev:parcel": "parcel src/index.html",
+    "build": "npm run build:fetch-emote && npm run build:parcel",
+    "build:fetch-emote": "node build/fetch-emote.js",
+    "build:parcel": "parcel build src/index.html"
+  },
+  "keywords": [],
+  "author": "Matt (IPv4) Cowley",
+  "license": "Apache-2.0",
+  "dependencies": {},
+  "devDependencies": {
+    "dank-twitch-irc": "^4.3.0",
+    "parcel-bundler": "^1.12.4",
+    "posthtml": "^0.15.1",
+    "posthtml-expressions": "^1.7.1",
+    "sass": "^1.32.2"
+  }
+}

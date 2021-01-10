@@ -1,0 +1,13 @@
+# IDE
+.idea/
+
+# Parcel
+.cache/
+dist/
+
+# Node
+node_modules/
+
+# Build
+build/data.json
+build/config.js

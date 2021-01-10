@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>{{ siteTitle }}</title>
+
+    <!-- Basic meta -->
+    <meta name="title"
+          content="{{ siteTitle }}"/>
+    <meta name="description"
+          content="{{ siteDescription }}"/>
+    <meta name="keywords"
+          content="twitch, twitchtv, pog, pogchamp, pog champ, twitch emote, emote, pog emote, pogchamp emote"/>
+    <link rel="image_src"
+          content="{{ pogChampUrlLarge }}"/>
+    <meta name="theme-color"
+          content="#9146ff"/>
+
+    <!-- Icons -->
+    <link rel="icon" type="image/png"
+          href="{{ pogChampUrlLarge }}"/>
+    <link rel="shortcut-icon" type="image/png"
+          href="{{ pogChampUrlLarge }}"/>
+    <link rel="apple-touch-icon" type="image/png"
+          href="{{ pogChampUrlLarge }}"/>
+
+    <!-- Canonical -->
+    <link rel="canonical"
+          href="https://pogchamp.today/"/>
+    <meta name="canonicalURL"
+          content="https://pogchamp.today/"/>
+
+    <!-- Twitter meta -->
+    <meta name="twitter:card"
+          content="summary_large_image">
+    <meta name="twitter:site"
+          content="@MattIPv4"/>
+    <meta name="twitter:creator"
+          content="@MattIPv4"/>
+    <meta name="twitter:title"
+          content="{{ siteTitle }}"/>
+    <meta name="twitter:description"
+          content="{{ siteDescription }}"/>
+    <meta name="twitter:image"
+          content="{{ pogChampUrlLarge }}"/>
+    <meta name="twitter:url"
+          content="https://pogchamp.today/"/>
+
+    <!-- OG meta -->
+    <meta prefix="og: http://ogp.me/ns#" property="og:title"
+          content="{{ siteTitle }}"/>
+    <meta prefix="og: http://ogp.me/ns#" property="og:type"
+          content="website"/>
+    <meta prefix="og: http://ogp.me/ns#" property="og:locale"
+          content="en_GB"/>
+    <meta prefix="og: http://ogp.me/ns#" property="og:site_name"
+          content="{{ siteTitle }}"/>
+    <meta prefix="og: http://ogp.me/ns#" property="og:description"
+          content="{{ siteDescription }}"/>
+    <meta prefix="og: http://ogp.me/ns#" property="og:url"
+          content="https://pogchamp.today/"/>
+    <meta prefix="og: http://ogp.me/ns#" property="og:image"
+          content="{{ pogChampUrlLarge }}"/>
+
+    <!-- Global styles -->
+    <link rel="stylesheet" href="index.scss"/>
+    <link href="https://fonts.googleapis.com/css?family=Space+Grotesk:400&display=swap"
+          rel="stylesheet">
+</head>
+<body>
+
+<h1>PogChamp of the Day</h1>
+<div id="pog">
+    <img src="{{ pogChampUrlLarge }}" alt="PogChamp" />
+</div>
+<script src="index.js"></script>
+</body>
+</html>
