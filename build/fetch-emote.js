@@ -17,6 +17,12 @@ const config = require('./config');
 //     await fs.writeFile(path.join(__dirname, 'data.json'), JSON.stringify(pogChamp));
 // };
 
+// Abort if a nested Promise fails anywhere
+process.on('unhandledRejection', err => {
+    console.error(err);
+    process.exit(1);
+});
+
 // Get the PogChamp emote by sending a message in chat
 const main = () => new Promise(resolve => {
     // Create the public client
@@ -72,14 +78,12 @@ const main = () => new Promise(resolve => {
 
 // Set a timeout to abort if taking too long (15s)
 const abort = setTimeout(() => {
-    throw new Error('Emote fetch took too long (15s), aborted');
+    console.error(new Error('Emote fetch took too long (15s), aborted'));
+    process.exit(1);
 }, 15 * 1000);
 
 // Do the fetch
-main().catch(e => {
-    console.error(e);
-    process.exit(1);
-});
+main().then(() => {});
 
 // We're done, clear the timeout
 clearTimeout(abort);
