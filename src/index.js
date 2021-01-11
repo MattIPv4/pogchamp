@@ -274,7 +274,7 @@ const main = async () => {
     const glitchEyes = glitch.getElementById('glitch-eyes');
     glitchEyes.style.transition = `transform 150ms cubic-bezier(.6, 0, .4, 1)`;
     glitchEyes.style.transformOrigin = '0 35%';
-    glitchEyes.style.transform = 'scale(100%, 0%)';
+    glitchEyes.style.transform = 'scaleY(0)';
     content.appendChild(glitch);
     await waitForFrame();
     await waitForFrame();
@@ -285,29 +285,29 @@ const main = async () => {
 
     // Open Glitch eyes (4400ms)
     await waitForMillis(400);
-    glitchEyes.style.transform = 'scale(100%, 100%)'; // Ends at 4550ms
+    glitchEyes.style.transform = 'scaleY(1)'; // Ends at 4550ms
 
     // Close Glitch eyes (4550ms)
     await waitForMillis(150);
     await waitForFrame();
-    glitchEyes.style.transform = 'scale(100%, 5%)'; // Ends at 4700ms
+    glitchEyes.style.transform = 'scaleY(0.05)'; // Ends at 4700ms
 
     // Open Glitch eyes again (4700ms)
     await waitForMillis(150);
     await waitForFrame();
-    glitchEyes.style.transform = 'scale(100%, 100%)'; // Ends at 4850ms
+    glitchEyes.style.transform = 'scaleY(1)'; // Ends at 4850ms
 
     // Close Glitch eyes again (4850ms)
     await waitForMillis(150);
     await waitForFrame();
-    glitchEyes.style.transform = 'scale(100%, 5%)'; // Ends at 5000ms
+    glitchEyes.style.transform = 'scaleY(0.05)'; // Ends at 5000ms
 
     // Open Glitch eyes slowly (5000ms)
     await waitForMillis(150);
     await waitForFrame();
     glitchEyes.style.transition = `transform 600ms cubic-bezier(.6, 0, .4, 1)`;
     await waitForFrame();
-    glitchEyes.style.transform = 'scale(100%, 100%)'; // Ends at 5600ms
+    glitchEyes.style.transform = 'scaleY(1)'; // Ends at 5600ms
 
     // Fade out Glitch (5500ms)
     await waitForMillis(500);
