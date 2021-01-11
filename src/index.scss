@@ -2,6 +2,14 @@ $twitch: #9146ff;
 $dark: #000;
 $light: #f0f0ff;
 
+@mixin title {
+  text-align: center;
+  font-size: min(4em, 15vw);
+  letter-spacing: -.04em;
+  line-height: 125%;
+  margin: 0;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -13,7 +21,9 @@ body {
   min-height: 100vh;
   background: $twitch;
   color: $dark;
+  font-size: 16px;
   font-family: 'Space Grotesk', sans-serif; // This should use Roobert but this is a free Google Fonts alternative
+  font-weight: 600;
 }
 
 body {
@@ -31,17 +41,72 @@ body {
     }
   }
 
+  &.half-dark {
+    #content {
+      width: 100%;
+      height: 100vh;
+
+      h2 {
+        @include title;
+      }
+
+      > div {
+        padding: 2em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &:first-child {
+          height: 40%;
+          justify-content: flex-end;
+
+          @media (min-width: 768px) {
+            height: 50%;
+          }
+        }
+
+        &:last-child {
+          height: 60%;
+          color: $twitch;
+
+          @media (min-width: 768px) {
+            height: 50%;
+          }
+
+          a {
+            color: $light;
+            transition: color 150ms ease-in-out;
+
+            &:hover {
+              color: $twitch;
+            }
+          }
+
+          background: $dark;
+          justify-content: flex-start;
+        }
+      }
+    }
+
+    > p {
+      color: $light;
+
+      a {
+        color: $twitch;
+      }
+    }
+  }
+
   a {
     color: $light;
   }
 
   #content {
     margin: auto 1em;
-    z-index: 0;
+    z-index: 1;
 
     #title {
-      font-size: 4em;
-      text-align: center;
+      @include title;
     }
 
     img {
@@ -54,7 +119,13 @@ body {
     position: fixed;
     bottom: 0;
     margin: 1em;
-    z-index: 1;
+    z-index: 2;
     font-size: .75em;
+    font-weight: 400;
+
+    &,
+    a {
+      transition: color 1s ease-in-out;
+    }
   }
 }

@@ -14,9 +14,9 @@ const getElmWithText = (elm, text) => {
     return domElm;
 };
 
-const getSubSpan = text => {
+const getSubSpan = (text, opacity) => {
     const elm = getElmWithText('span', text);
-    elm.style.opacity = '0';
+    elm.style.opacity = opacity;
     elm.style.display = 'inline-block';
     elm.style.margin = '0 .15em';
     return elm;
@@ -105,11 +105,11 @@ const main = async () => {
     title.appendChild(titleBottomRow);
 
     // Insert the bottom row text
-    const titleBottomRowOne = getSubSpan('of');
+    const titleBottomRowOne = getSubSpan('of', 0);
     titleBottomRow.appendChild(titleBottomRowOne);
-    const titleBottomRowTwo = getSubSpan('the');
+    const titleBottomRowTwo = getSubSpan('the', 0);
     titleBottomRow.appendChild(titleBottomRowTwo);
-    const titleBottomRowThree = getSubSpan('Day');
+    const titleBottomRowThree = getSubSpan('Day', 0);
     titleBottomRow.appendChild(titleBottomRowThree);
 
     // Insert the arrows
@@ -214,6 +214,7 @@ const main = async () => {
     await waitForMillis(100);
     document.body.className = 'dark';
     title.style.display = 'none';
+    title.parentElement.removeChild(title);
 
     // Poggers time (1150ms)
     await waitForMillis(50);
@@ -246,6 +247,7 @@ const main = async () => {
     await waitForMillis(675);
     document.body.className = '';
     grid.style.display = 'none';
+    grid.parentElement.removeChild(grid);
     pog.firstElementChild.style.transition = `width 600ms cubic-bezier(.6, 0, .4, 1), height 600ms cubic-bezier(.6, 0, .4, 1)`;
     await waitForFrame();
     pog.firstElementChild.style.width = '14em'; // Ends at 3100ms
@@ -314,20 +316,101 @@ const main = async () => {
     glitch.style.transition = 'opacity 2000ms cubic-bezier(1, 0, .5, 1)';
     glitch.style.opacity = '0'; // Ends at 7500ms
 
-    // Fade in Pog (7600ms)
-    await waitForMillis(2100);
-    glitch.style.display = 'none';
+    // Build out the new sections
     pog.style.display = '';
-    pog.style.opacity = '0';
-    pog.style.transition = 'opacity 2000ms cubic-bezier(.5, 0, 1, 1)';
+    pog.style.opacity = '';
+    const topHalf = document.createElement('div');
+    topHalf.style.opacity = '0';
+    topHalf.style.transition = 'opacity 2000ms cubic-bezier(.5, 0, 1, 1)';
+    topHalf.appendChild(pog);
+    const bottomHalf = document.createElement('div');
+    bottomHalf.style.opacity = '0';
+    bottomHalf.style.transition = 'opacity 1000ms cubic-bezier(.5, 0, 1, 1)';
+
+    // Add the text to the bottom section
+    const closingTopRow = document.createElement('h2');
+    bottomHalf.appendChild(closingTopRow);
+    const closingBottomRow = document.createElement('h2');
+    bottomHalf.appendChild(closingBottomRow);
+    const closingBottomRowLink = document.createElement('a');
+    closingBottomRowLink.href = 'https://www.twitch.tv/';
+    closingBottomRow.appendChild(closingBottomRowLink);
+    // TODO: Add the arrow icon to the link
+
+    // Insert the text
+    const closingTopRowOne = getSubSpan('Start', 0);
+    closingTopRow.appendChild(closingTopRowOne);
+    const closingTopRowTwo = getSubSpan('chatting.', 0);
+    closingTopRow.appendChild(closingTopRowTwo);
+    const closingBottomRowOne = getSubSpan('Watch', 0);
+    closingBottomRowLink.appendChild(closingBottomRowOne);
+    const closingBottomRowTwo = getSubSpan('now', 0);
+    closingBottomRowLink.appendChild(closingBottomRowTwo);
+
+    // Fade in Pog & dark bg (7600ms)
+    await waitForMillis(2100);
+    document.body.className = 'half-dark';
+    content.appendChild(topHalf);
+    content.appendChild(bottomHalf);
+    glitch.style.display = 'none';
+    glitch.parentElement.removeChild(glitch);
     pog.firstElementChild.style.transition = 'width 5000ms cubic-bezier(.3, 0, .7, 1), height 5000ms cubic-bezier(.3, 0, .7, 1)';
     pog.firstElementChild.style.width = '8em';
     pog.firstElementChild.style.height = '8em';
     await waitForFrame();
     await waitForFrame();
-    pog.style.opacity = '1'; // Ends at 9600ms
+    topHalf.style.opacity = '1'; // Ends at 9600ms
+    bottomHalf.style.opacity = '1'; // Ends at 8600ms
     pog.firstElementChild.style.width = '12em'; // Ends at 12100ms
     pog.firstElementChild.style.height = '12em';
+
+    // Display the top row part one (8600ms)
+    await waitForMillis(1000);
+    closingTopRowOne.style.opacity = '1';
+    closingTopRowOne.style.position = 'relative';
+    closingTopRowOne.style.top = '1em';
+
+    // Display the top row part one (8700ms)
+    await waitForMillis(100);
+    closingTopRowTwo.style.opacity = '1';
+    closingTopRowTwo.style.position = 'relative';
+    closingTopRowTwo.style.top = '1em';
+
+    // Begin the top row part one movement (8850ms)
+    await waitForMillis(50);
+    closingTopRowOne.style.transition = 'top 500ms ' + timingFunction; // Ends at 9350ms
+    await waitForFrame();
+    closingTopRowOne.style.top = '0';
+
+    // Begin the top row part two movement (8950ms)
+    await waitForMillis(100);
+    closingTopRowTwo.style.transition = 'top 500ms ' + timingFunction; // Ends at 9450ms
+    await waitForFrame();
+    closingTopRowTwo.style.top = '0';
+
+    // Display the bottom row part one (9150ms)
+    await waitForMillis(200);
+    closingBottomRowOne.style.opacity = '1';
+    closingBottomRowOne.style.position = 'relative';
+    closingBottomRowOne.style.top = '1em';
+
+    // Display the bottom row part one (9250ms)
+    await waitForMillis(100);
+    closingBottomRowTwo.style.opacity = '1';
+    closingBottomRowTwo.style.position = 'relative';
+    closingBottomRowTwo.style.top = '1em';
+
+    // Begin the bottom row part one movement (9300ms)
+    await waitForMillis(50);
+    closingBottomRowOne.style.transition = 'top 500ms ' + timingFunction; // Ends at 9800ms
+    await waitForFrame();
+    closingBottomRowOne.style.top = '0';
+
+    // Begin the bottom row part two movement (9400ms)
+    await waitForMillis(100);
+    closingBottomRowTwo.style.transition = 'top 500ms ' + timingFunction; // Ends at 9900ms
+    await waitForFrame();
+    closingBottomRowTwo.style.top = '0';
 };
 
 document.addEventListener('DOMContentLoaded', main);
