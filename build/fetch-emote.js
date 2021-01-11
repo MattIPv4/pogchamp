@@ -5,7 +5,7 @@ const config = require('./config');
 
 // Get the PogChamp emote from the Twitch API directly
 // This doesn't work, it returns the original (now removed) PogChamp
-// const api = async () => {
+// const fetchFromAPI = async () => {
 //     const resp = await fetch('https://api.twitch.tv/kraken/chat/emoticons', {
 //         headers: {
 //             'Accept': 'application/vnd.twitchtv.v5+json',
@@ -24,7 +24,7 @@ process.on('unhandledRejection', err => {
 });
 
 // Get the PogChamp emote by sending a message in chat
-const main = () => new Promise(resolve => {
+const fetchFromChat = () => new Promise(resolve => {
     // Create the public client
     const publicClient = new ChatClient();
     const botClient = new ChatClient({
@@ -52,11 +52,10 @@ const main = () => new Promise(resolve => {
             const pogChamp = msg.emotes.find(emote => emote.code === 'PogChamp');
             if (!pogChamp) return;
 
-            // Store the emote, disconnect and resolve
-            await fs.writeFile(path.join(__dirname, 'data.json'), JSON.stringify(pogChamp));
+            // Disconnect and resolve with the emote ID
             publicClient.close();
             botClient.close();
-            resolve();
+            resolve(pogChamp.id);
         });
 
         // Send the message on the bot client
@@ -75,6 +74,24 @@ const main = () => new Promise(resolve => {
     publicClient.connect().then(() => publicClient.join(config.TWITCH_CHANNEL));
     botClient.connect().then(() => botClient.join(config.TWITCH_CHANNEL));
 });
+
+const main = async () => {
+    // Get the emote
+    const id = await fetchFromChat();
+
+    // Build the full data
+    const pogChamp = {
+        id: id,
+        img: {
+            small: `https://static-cdn.jtvnw.net/emoticons/v2/${id}/default/dark/1.0`,
+            medium: `https://static-cdn.jtvnw.net/emoticons/v2/${id}/default/dark/2.0`,
+            large: `https://static-cdn.jtvnw.net/emoticons/v2/${id}/default/dark/3.0`,
+        },
+    };
+
+    // Store
+    await fs.writeFile(path.join(__dirname, 'data.json'), JSON.stringify(pogChamp));
+};
 
 // Set a timeout to abort if taking too long (15s)
 const abort = setTimeout(() => {
