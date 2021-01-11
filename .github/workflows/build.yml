@@ -6,6 +6,7 @@ on:
       - master
   schedule:
     - cron: '*/30 * * * *'
+    - cron: '5,10,15,20,25 17 * * *'
 
 jobs:
   build-and-deploy:
