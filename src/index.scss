@@ -2,6 +2,10 @@ $twitch: #9146ff;
 $dark: #000;
 $light: #f0f0ff;
 
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
   padding: 0;
@@ -17,18 +21,37 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
 
-h1 {
-  font-size: 4em;
-  text-align: center;
-}
+  &.dark {
+    background: $dark;
+    color: $light;
 
-img {
-  width: 8em;
-  height: 8em;
-}
+    a {
+      color: $twitch;
+    }
+  }
 
-* {
-  box-sizing: border-box;
+  a {
+    color: $light;
+  }
+
+  #content {
+    margin: auto 1em;
+    z-index: 0;
+
+    #title {
+      font-size: 4em;
+      text-align: center;
+    }
+
+    img {
+      width: 8em;
+      height: 8em;
+    }
+  }
+
+  > p {
+    margin: 1em;
+    z-index: 1;
+  }
 }

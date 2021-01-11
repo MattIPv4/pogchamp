@@ -1,5 +1,6 @@
 const arrowSvg = require('./icons/arrow.svg');
 const chevronSvg = require('./icons/chevron.svg');
+const glitchFullSvg = require('./icons/glitch-full.svg');
 
 const getElementFromString = htmlString => {
     const div = document.createElement('div');
@@ -30,7 +31,7 @@ const getSvgElm = svgString => {
 
 const setPogGridSize = (grid, size) => {
     // TODO: Replace with JS calc
-    const sizeStr = `min(${size}vh,${size}vw)`;
+    const sizeStr = `min(${size}vh, ${size}vw)`;
     grid.style.width = sizeStr;
     grid.style.minWidth = sizeStr;
     grid.style.height = sizeStr;
@@ -91,6 +92,7 @@ const main = async () => {
     const timingFunctionArrows = 'cubic-bezier(.5, .5, .5, .5)';
 
     // Get the base elms
+    const content = document.getElementById('content');
     const title = document.getElementById('title');
     const pog = document.getElementById('pog');
 
@@ -209,7 +211,7 @@ const main = async () => {
 
     // Blackout (1100ms)
     await waitForMillis(100);
-    document.body.style.background = '#000';
+    document.body.className = 'dark';
     title.style.display = 'none';
 
     // Poggers time (1150ms)
@@ -218,7 +220,7 @@ const main = async () => {
     pog.style.display = '';
     pog.firstElementChild.style.transition = `transform 675ms cubic-bezier(.1, 0, .9, 1), width ${gridZoomTransition}, height ${gridZoomTransition}`;
     const grid = getPogGrid(pog.firstElementChild, gridZoomTransition);
-    document.body.appendChild(grid);
+    content.appendChild(grid);
     await waitForFrame();
     await waitForFrame();
     pog.firstElementChild.style.transform = 'rotate(-45deg)'; // Ends at 1825ms
@@ -241,18 +243,90 @@ const main = async () => {
 
     // Zoom in and solo (2500ms)
     await waitForMillis(675);
-    document.body.style.background = '';
+    document.body.className = '';
     grid.style.display = 'none';
-    pog.firstElementChild.style.transition = `width 500ms ${timingFunction}, height 500ms ${timingFunction}`; // Ends at 3000ms
+    pog.firstElementChild.style.transition = `width 600ms cubic-bezier(.6, 0, .4, 1), height 600ms cubic-bezier(.6, 0, .4, 1)`;
     await waitForFrame();
-    pog.firstElementChild.style.width = '10em';
-    pog.firstElementChild.style.height = '10em';
+    pog.firstElementChild.style.width = '14em'; // Ends at 3100ms
+    pog.firstElementChild.style.height = '14em';
 
-    // TODO: Zoom back out
+    // Zoom back out (3500ms)
+    await waitForMillis(1000);
+    pog.firstElementChild.style.width = '8em'; // Ends at 4100ms
+    pog.firstElementChild.style.height = '8em';
 
-    // TODO: Show Glitch w/ blink
+    // Show Glitch (4000ms)
+    await waitForMillis(500);
+    pog.style.display = 'none';
+    pog.style.transition = '';
+    pog.firstElementChild.style.transition = '';
+    const glitchFull = getElementFromString(glitchFullSvg);
+    glitchFull.style.transition = `width 600ms cubic-bezier(.6, 0, .4, 1), height 600ms cubic-bezier(.6, 0, .4, 1)`;
+    glitchFull.style.width = '8.5em';
+    glitchFull.style.height = '8.5em';
+    const glitchFullOuter = glitchFull.getElementById('glitch-full-outer');
+    const glitchFullInner = glitchFull.getElementById('glitch-full-inner');
+    glitchFullOuter.style.transition = `transform 150ms cubic-bezier(.6, 0, .4, 1)`;
+    glitchFullOuter.style.transform = 'translate(-15%, 15%)';
+    glitchFullInner.style.transition = `transform 300ms cubic-bezier(.6, 0, .4, 1)`;
+    glitchFullInner.style.transform = 'translate(-15%, 15%)';
+    const glitchFullEyes = glitchFull.getElementById('glitch-full-eyes');
+    glitchFullEyes.style.transition = `transform 150ms cubic-bezier(.6, 0, .4, 1)`;
+    glitchFullEyes.style.transformOrigin = '0 35%';
+    glitchFullEyes.style.transform = 'scale(100%, 0%)';
+    content.appendChild(glitchFull);
+    await waitForFrame();
+    await waitForFrame();
+    glitchFullOuter.style.transform = 'translate(0%, 0%)'; // Ends at 4150ms
+    glitchFullInner.style.transform = 'translate(0%, 0%)'; // Ends at 4300ms
+    glitchFull.style.width = '8em'; // Ends at 4600ms
+    glitchFull.style.height = '8em';
 
-    // TODO: Show PogChamp again
+    // Open Glitch eyes (4400ms)
+    await waitForMillis(400);
+    glitchFullEyes.style.transform = 'scale(100%, 100%)'; // Ends at 4550ms
+
+    // Close Glitch eyes (4550ms)
+    await waitForMillis(150);
+    await waitForFrame();
+    glitchFullEyes.style.transform = 'scale(100%, 5%)'; // Ends at 4700ms
+
+    // Open Glitch eyes again (4700ms)
+    await waitForMillis(150);
+    await waitForFrame();
+    glitchFullEyes.style.transform = 'scale(100%, 100%)'; // Ends at 4850ms
+
+    // Close Glitch eyes again (4850ms)
+    await waitForMillis(150);
+    await waitForFrame();
+    glitchFullEyes.style.transform = 'scale(100%, 5%)'; // Ends at 5000ms
+
+    // Open Glitch eyes slowly (5000ms)
+    await waitForMillis(150);
+    await waitForFrame();
+    glitchFullEyes.style.transition = `transform 600ms cubic-bezier(.6, 0, .4, 1)`;
+    await waitForFrame();
+    glitchFullEyes.style.transform = 'scale(100%, 100%)'; // Ends at 5600ms
+
+    // Fade out Glitch (5500ms)
+    await waitForMillis(500);
+    glitchFull.style.transition = 'opacity 2000ms cubic-bezier(1, 0, .5, 1)';
+    glitchFull.style.opacity = '0'; // Ends at 7500ms
+
+    // Fade in Pog (7600ms)
+    await waitForMillis(2100);
+    glitchFull.style.display = 'none';
+    pog.style.display = '';
+    pog.style.opacity = '0';
+    pog.style.transition = 'opacity 2000ms cubic-bezier(.5, 0, 1, 1)';
+    pog.firstElementChild.style.transition = 'width 5000ms cubic-bezier(.3, 0, .7, 1), height 5000ms cubic-bezier(.3, 0, .7, 1)';
+    pog.firstElementChild.style.width = '8em';
+    pog.firstElementChild.style.height = '8em';
+    await waitForFrame();
+    await waitForFrame();
+    pog.style.opacity = '1'; // Ends at 9600ms
+    pog.firstElementChild.style.width = '12em'; // Ends at 12100ms
+    pog.firstElementChild.style.height = '12em';
 };
 
 document.addEventListener('DOMContentLoaded', main);

@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="ETag" content='W/"{{ pogChampId }}"'/>
     <title>{{ siteTitle }}</title>
 
     <!-- Basic meta -->
@@ -33,7 +34,7 @@
 
     <!-- Twitter meta -->
     <meta name="twitter:card"
-          content="summary_large_image">
+          content="summary">
     <meta name="twitter:site"
           content="@MattIPv4"/>
     <meta name="twitter:creator"
@@ -69,12 +70,18 @@
           rel="stylesheet">
 </head>
 <body>
+<div id="content">
+    <h1 id="title">PogChamp of the Day</h1>
 
-<h1 id="title">PogChamp of the Day</h1>
-
-<div id="pog">
-    <img src="{{ pogChampUrlLarge }}" alt="PogChamp" />
+    <div id="pog">
+        <img src="{{ pogChampUrlLarge }}" alt="PogChamp" />
+    </div>
 </div>
+
+<p>
+    Not affiliated with <a href="https://www.twitch.tv/about/" target="_blank" rel="noopener">Twitch Interactive, Inc.</a>
+    Built by <a href="https://mattcowley.co.uk/" target="_blank" rel="noopener">Matt Cowley</a>.
+</p>
 
 <script src="index.js"></script>
 </body>
