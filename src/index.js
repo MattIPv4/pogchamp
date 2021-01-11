@@ -29,9 +29,8 @@ const getSvgElm = svgString => {
     return svg;
 };
 
-const setPogGridSize = (grid, size) => {
-    // TODO: Replace with JS calc
-    const sizeStr = `min(${size}vh, ${size}vw)`;
+const setPogGridSize = (grid, size, ems) => {
+    const sizeStr = `max(min(${size}vh, ${size}vw), calc(${ems}em * 9))`;
     grid.style.width = sizeStr;
     grid.style.minWidth = sizeStr;
     grid.style.height = sizeStr;
@@ -60,7 +59,7 @@ const getPogGrid = (sourceImg, zoomTransition) => {
     wrapper.style.transition = ['width', 'minWidth', 'height', 'minHeight']
         .map(prop => `${prop} ${zoomTransition}`).join(', ') + ', transform 1350ms linear';
     wrapper.style.transform = 'rotate(0deg)';
-    setPogGridSize(wrapper, 215);
+    setPogGridSize(wrapper, 215, 8);
 
     for (let i = 0; i < 5; i++) {
         const row = document.createElement('div');
@@ -76,6 +75,8 @@ const getPogGrid = (sourceImg, zoomTransition) => {
             img.src = sourceImg.src;
             img.style.transition = `transform 1000ms linear, width ${zoomTransition}, height ${zoomTransition}`;
             img.style.transform = 'rotate(0deg)';
+            img.style.width = '8em';
+            img.style.height = '8em';
             if (i === 2 && j === 2) img.style.opacity = '0'; // Hide the center
         }
     }
@@ -228,7 +229,7 @@ const main = async () => {
 
     // Zoom out (1500ms)
     await waitForMillis(350);
-    setPogGridSize(grid.firstElementChild, 150);
+    setPogGridSize(grid.firstElementChild, 150, 6);
     for (const img of grid.firstElementChild.getElementsByTagName('img')) {
         img.style.width = '6em';
         img.style.height = '6em';
