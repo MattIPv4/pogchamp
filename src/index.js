@@ -1,6 +1,7 @@
 const arrowSvg = require('./icons/arrow.svg');
 const chevronSvg = require('./icons/chevron.svg');
 const glitchSvg = require('./icons/glitch.svg');
+const linkSvg = require('./icons/link.svg');
 
 const getElementFromString = htmlString => {
     const div = document.createElement('div');
@@ -335,7 +336,6 @@ const main = async () => {
     const closingBottomRowLink = document.createElement('a');
     closingBottomRowLink.href = 'https://www.twitch.tv/';
     closingBottomRow.appendChild(closingBottomRowLink);
-    // TODO: Add the arrow icon to the link
 
     // Insert the text
     const closingTopRowOne = getSubSpan('Start', 0);
@@ -346,6 +346,10 @@ const main = async () => {
     closingBottomRowLink.appendChild(closingBottomRowOne);
     const closingBottomRowTwo = getSubSpan('now', 0);
     closingBottomRowLink.appendChild(closingBottomRowTwo);
+    const closingBottomRowLinkArrows = document.createElement('span');
+    closingBottomRowLink.appendChild(closingBottomRowLinkArrows);
+    closingBottomRowLinkArrows.appendChild(getElementFromString(linkSvg));
+    closingBottomRowLinkArrows.appendChild(getElementFromString(linkSvg));
 
     // Fade in Pog & dark bg (7600ms)
     await waitForMillis(2100);
@@ -357,6 +361,8 @@ const main = async () => {
     pog.firstElementChild.style.transition = 'width 5000ms cubic-bezier(.3, 0, .7, 1), height 5000ms cubic-bezier(.3, 0, .7, 1)';
     pog.firstElementChild.style.width = '8em';
     pog.firstElementChild.style.height = '8em';
+    closingBottomRowLinkArrows.firstElementChild.style.top = '1em';
+    closingBottomRowLinkArrows.firstElementChild.style.right = '1em';
     await waitForFrame();
     await waitForFrame();
     topHalf.style.opacity = '1'; // Ends at 9600ms
@@ -411,6 +417,11 @@ const main = async () => {
     closingBottomRowTwo.style.transition = 'top 500ms ' + timingFunction; // Ends at 9900ms
     await waitForFrame();
     closingBottomRowTwo.style.top = '0';
+
+    // Begin the bottom row arrow movement (9600ms)
+    await waitForMillis(200);
+    closingBottomRowLinkArrows.firstElementChild.style.top = ''; // Ends at 9900ms
+    closingBottomRowLinkArrows.firstElementChild.style.right = '';
 };
 
 document.addEventListener('DOMContentLoaded', main);
