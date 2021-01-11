@@ -1,6 +1,6 @@
 const arrowSvg = require('./icons/arrow.svg');
 const chevronSvg = require('./icons/chevron.svg');
-const glitchFullSvg = require('./icons/glitch-full.svg');
+const glitchSvg = require('./icons/glitch.svg');
 
 const getElementFromString = htmlString => {
     const div = document.createElement('div');
@@ -261,62 +261,62 @@ const main = async () => {
     pog.style.display = 'none';
     pog.style.transition = '';
     pog.firstElementChild.style.transition = '';
-    const glitchFull = getElementFromString(glitchFullSvg);
-    glitchFull.style.transition = `width 600ms cubic-bezier(.6, 0, .4, 1), height 600ms cubic-bezier(.6, 0, .4, 1)`;
-    glitchFull.style.width = '8.5em';
-    glitchFull.style.height = '8.5em';
-    const glitchFullOuter = glitchFull.getElementById('glitch-full-outer');
-    const glitchFullInner = glitchFull.getElementById('glitch-full-inner');
-    glitchFullOuter.style.transition = `transform 150ms cubic-bezier(.6, 0, .4, 1)`;
-    glitchFullOuter.style.transform = 'translate(-15%, 15%)';
-    glitchFullInner.style.transition = `transform 300ms cubic-bezier(.6, 0, .4, 1)`;
-    glitchFullInner.style.transform = 'translate(-15%, 15%)';
-    const glitchFullEyes = glitchFull.getElementById('glitch-full-eyes');
-    glitchFullEyes.style.transition = `transform 150ms cubic-bezier(.6, 0, .4, 1)`;
-    glitchFullEyes.style.transformOrigin = '0 35%';
-    glitchFullEyes.style.transform = 'scale(100%, 0%)';
-    content.appendChild(glitchFull);
+    const glitch = getElementFromString(glitchSvg);
+    glitch.style.transition = `width 600ms cubic-bezier(.6, 0, .4, 1), height 600ms cubic-bezier(.6, 0, .4, 1)`;
+    glitch.style.width = '8.5em';
+    glitch.style.height = '8.5em';
+    const glitchOuter = glitch.getElementById('glitch-outer'); // Relies on mask to crop as we translate
+    const glitchInner = glitch.getElementById('glitch-inner'); // Relies on mask to crop as we translate
+    glitchOuter.style.transition = `transform 150ms cubic-bezier(.6, 0, .4, 1)`;
+    glitchOuter.style.transform = 'translate(-15%, 15%)';
+    glitchInner.style.transition = `transform 300ms cubic-bezier(.6, 0, .4, 1)`;
+    glitchInner.style.transform = 'translate(-15%, 15%)';
+    const glitchEyes = glitch.getElementById('glitch-eyes');
+    glitchEyes.style.transition = `transform 150ms cubic-bezier(.6, 0, .4, 1)`;
+    glitchEyes.style.transformOrigin = '0 35%';
+    glitchEyes.style.transform = 'scale(100%, 0%)';
+    content.appendChild(glitch);
     await waitForFrame();
     await waitForFrame();
-    glitchFullOuter.style.transform = 'translate(0%, 0%)'; // Ends at 4150ms
-    glitchFullInner.style.transform = 'translate(0%, 0%)'; // Ends at 4300ms
-    glitchFull.style.width = '8em'; // Ends at 4600ms
-    glitchFull.style.height = '8em';
+    glitchOuter.style.transform = 'translate(0%, 0%)'; // Ends at 4150ms
+    glitchInner.style.transform = 'translate(0%, 0%)'; // Ends at 4300ms
+    glitch.style.width = '8em'; // Ends at 4600ms
+    glitch.style.height = '8em';
 
     // Open Glitch eyes (4400ms)
     await waitForMillis(400);
-    glitchFullEyes.style.transform = 'scale(100%, 100%)'; // Ends at 4550ms
+    glitchEyes.style.transform = 'scale(100%, 100%)'; // Ends at 4550ms
 
     // Close Glitch eyes (4550ms)
     await waitForMillis(150);
     await waitForFrame();
-    glitchFullEyes.style.transform = 'scale(100%, 5%)'; // Ends at 4700ms
+    glitchEyes.style.transform = 'scale(100%, 5%)'; // Ends at 4700ms
 
     // Open Glitch eyes again (4700ms)
     await waitForMillis(150);
     await waitForFrame();
-    glitchFullEyes.style.transform = 'scale(100%, 100%)'; // Ends at 4850ms
+    glitchEyes.style.transform = 'scale(100%, 100%)'; // Ends at 4850ms
 
     // Close Glitch eyes again (4850ms)
     await waitForMillis(150);
     await waitForFrame();
-    glitchFullEyes.style.transform = 'scale(100%, 5%)'; // Ends at 5000ms
+    glitchEyes.style.transform = 'scale(100%, 5%)'; // Ends at 5000ms
 
     // Open Glitch eyes slowly (5000ms)
     await waitForMillis(150);
     await waitForFrame();
-    glitchFullEyes.style.transition = `transform 600ms cubic-bezier(.6, 0, .4, 1)`;
+    glitchEyes.style.transition = `transform 600ms cubic-bezier(.6, 0, .4, 1)`;
     await waitForFrame();
-    glitchFullEyes.style.transform = 'scale(100%, 100%)'; // Ends at 5600ms
+    glitchEyes.style.transform = 'scale(100%, 100%)'; // Ends at 5600ms
 
     // Fade out Glitch (5500ms)
     await waitForMillis(500);
-    glitchFull.style.transition = 'opacity 2000ms cubic-bezier(1, 0, .5, 1)';
-    glitchFull.style.opacity = '0'; // Ends at 7500ms
+    glitch.style.transition = 'opacity 2000ms cubic-bezier(1, 0, .5, 1)';
+    glitch.style.opacity = '0'; // Ends at 7500ms
 
     // Fade in Pog (7600ms)
     await waitForMillis(2100);
-    glitchFull.style.display = 'none';
+    glitch.style.display = 'none';
     pog.style.display = '';
     pog.style.opacity = '0';
     pog.style.transition = 'opacity 2000ms cubic-bezier(.5, 0, 1, 1)';
