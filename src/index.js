@@ -262,6 +262,7 @@ const main = async () => {
     pog.style.transition = '';
     pog.firstElementChild.style.transition = '';
     const glitch = getElementFromString(glitchSvg);
+    content.appendChild(glitch);
     glitch.style.transition = `width 600ms cubic-bezier(.6, 0, .4, 1), height 600ms cubic-bezier(.6, 0, .4, 1)`;
     glitch.style.width = '8.5em';
     glitch.style.height = '8.5em';
@@ -275,7 +276,6 @@ const main = async () => {
     glitchEyes.style.transition = `transform 150ms cubic-bezier(.6, 0, .4, 1)`;
     glitchEyes.style.transformOrigin = '0 35%';
     glitchEyes.style.transform = 'scaleY(0)';
-    content.appendChild(glitch);
     await waitForFrame();
     await waitForFrame();
     glitchOuter.style.transform = 'translate(0%, 0%)'; // Ends at 4150ms
