@@ -24,7 +24,12 @@ process.on('unhandledRejection', err => {
 });
 
 // Get the PogChamp emote by sending a message in chat
-const fetchFromChat = () => new Promise(resolve => {
+const fetchFromChat = () => new Promise((resolve, reject) => {
+    // Set a timeout to abort if taking too long (15s)
+    const abort = setTimeout(() => {
+        reject(new Error('Emote fetch took too long (15s), aborted'));
+    }, 15 * 1000);
+
     // Create the public client
     const publicClient = new ChatClient();
     const botClient = new ChatClient({
@@ -34,7 +39,8 @@ const fetchFromChat = () => new Promise(resolve => {
 
     // Handle the clients being ready
     let readyCount = 0;
-    const handleReady = async () => {
+    const handleReady = () => {
+        console.log('Ready');
         readyCount++;
         if (readyCount < 2) return;
 
@@ -43,7 +49,7 @@ const fetchFromChat = () => new Promise(resolve => {
         const message = `PogChamp ${key}`;
 
         // Listen for a message on the public client
-        publicClient.on('PRIVMSG', async msg => {
+        publicClient.on('PRIVMSG', msg => {
             if (msg.channelName !== config.TWITCH_CHANNEL) return;
             if (msg.senderUsername !== config.TWITCH_USERNAME) return;
             if (msg.messageText !== message) return;
@@ -52,14 +58,18 @@ const fetchFromChat = () => new Promise(resolve => {
             const pogChamp = msg.emotes.find(emote => emote.code === 'PogChamp');
             if (!pogChamp) return;
 
+            // We're done, clear the timeout
+            clearTimeout(abort);
+
             // Disconnect and resolve with the emote ID
             publicClient.close();
             botClient.close();
+            console.log(pogChamp.id);
             resolve(pogChamp.id);
         });
 
         // Send the message on the bot client
-        await botClient.say(config.TWITCH_CHANNEL, message);
+        botClient.say(config.TWITCH_CHANNEL, message).catch(reject);
     }
 
     // When the clients are ready, do stuff
@@ -67,17 +77,20 @@ const fetchFromChat = () => new Promise(resolve => {
     botClient.on('ready', handleReady);
 
     // Throw if the client errors
-    publicClient.on('close', err => { if (err) throw err; });
-    botClient.on('close', err => { if (err) throw err; });
+    publicClient.on('close', err => { if (err) reject(err); });
+    botClient.on('close', err => { if (err) reject(err); });
 
     // Start the clients
-    publicClient.connect().then(() => publicClient.join(config.TWITCH_CHANNEL));
-    botClient.connect().then(() => botClient.join(config.TWITCH_CHANNEL));
+    publicClient.connect().then(() => publicClient.join(config.TWITCH_CHANNEL).catch(reject)).catch(reject);
+    botClient.connect().then(() => botClient.join(config.TWITCH_CHANNEL).catch(reject)).catch(reject);
 });
 
 const main = async () => {
-    // Get the emote
-    const id = await fetchFromChat();
+    // Get the emote (allow one retry)
+    const id = await fetchFromChat().catch(e => {
+        console.warn(e);
+        return fetchFromChat();
+    });
 
     // Build the full data
     const pogChamp = {
@@ -88,19 +101,11 @@ const main = async () => {
             large: `https://static-cdn.jtvnw.net/emoticons/v2/${id}/default/dark/3.0`,
         },
     };
+    console.log(pogChamp);
 
     // Store
     await fs.writeFile(path.join(__dirname, 'data.json'), JSON.stringify(pogChamp));
 };
 
-// Set a timeout to abort if taking too long (15s)
-const abort = setTimeout(() => {
-    console.error(new Error('Emote fetch took too long (15s), aborted'));
-    process.exit(1);
-}, 15 * 1000);
-
 // Do the fetch
 main().then(() => {});
-
-// We're done, clear the timeout
-clearTimeout(abort);
