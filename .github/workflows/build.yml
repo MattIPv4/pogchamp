@@ -50,13 +50,32 @@ jobs:
 
       - name: Expose JSON data
         run: cp build/data.json dist/data.json
+        
+      - name: Download old artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: data.json
+          path: build/old.json
+
+      - name: Compare both artifacts
+        run: (diff build/data.json build/old.json &&  echo "NOT OK" | grep "NOT OK") && false # will exit the workflow with an error, stopping next build steps
+      
+      - name: Download combined artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: all.json
+          path: build/all.json
+
+      - name: Combine artifacts
+        run: jq -s . build/all.json build/data.json > build/all.json
       
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.2
         with:
           # Artifact name
-          name: data.json
-          path: build/data.json
+          name: all.json
+          path: build/all.json
+      
       - name: Add CNAME
         run: echo "pogchamp.today" > dist/CNAME
 
