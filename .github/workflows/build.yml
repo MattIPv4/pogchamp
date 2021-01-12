@@ -50,7 +50,13 @@ jobs:
 
       - name: Expose JSON data
         run: cp build/data.json dist/data.json
-
+      
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v2.2.2
+        with:
+          # Artifact name
+          name: data.json
+          path: build/data.json
       - name: Add CNAME
         run: echo "pogchamp.today" > dist/CNAME
 
