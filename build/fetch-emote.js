@@ -124,5 +124,7 @@ const main = async () => {
 
 // Do the fetch
 main().then(() => {
+    // Done, forcefully exit 'cause things don't always cleanup properly
     console.log('All done');
+    process.exit(0);
 });
