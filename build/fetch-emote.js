@@ -1,6 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
-const { ChatClient } = require('dank-twitch-irc');
+const tmi = require('tmi.js');
 const config = require('./config');
 
 // Get the PogChamp emote from the Twitch API directly
@@ -24,71 +24,86 @@ process.on('unhandledRejection', err => {
 });
 
 // Get the PogChamp emote by sending a message in chat
-const fetchFromChat = () => new Promise((resolve, reject) => {
-    // Set a timeout to abort if taking too long (15s)
-    const abort = setTimeout(() => {
-        reject(new Error('Emote fetch took too long (15s), aborted'));
-    }, 15 * 1000);
-
-    // Create the public client
-    const publicClient = new ChatClient();
-    const botClient = new ChatClient({
-        username: config.TWITCH_USERNAME,
-        password: config.TWITCH_PASSWORD,
+const fetchFromChat = () => new Promise(async (resolve, reject) => {
+    // Create the bot client to send and a public client to listen
+    const botClient = new tmi.Client({
+        connection: {
+            reconnect: true,
+            secure: true,
+        },
+        identity: {
+            username: config.TWITCH_USERNAME,
+            password: config.TWITCH_PASSWORD,
+        },
+        channels: [ config.TWITCH_CHANNEL ],
+    });
+    const publicClient = new tmi.Client({
+        connection: {
+            reconnect: true,
+            secure: true,
+        },
+        channels: [ config.TWITCH_CHANNEL ],
     });
 
-    // Handle the clients being ready
-    let readyCount = 0;
-    const handleReady = () => {
-        console.log('Ready');
-        readyCount++;
-        if (readyCount < 2) return;
+    // Handle rejections and clean up
+    const handleReject = err => {
+        // Attempt to close
+        publicClient.disconnect().catch(() => {});
+        botClient.disconnect().catch(() => {});
 
-        // Define a unique key and message
-        const key = (Math.random() * 10000).toString();
-        const message = `PogChamp ${key}`;
+        // Clear the timeout
+        clearTimeout(abort);
 
-        // Listen for a message on the public client
-        publicClient.on('PRIVMSG', msg => {
-            if (msg.channelName !== config.TWITCH_CHANNEL) return;
-            if (msg.senderUsername !== config.TWITCH_USERNAME) return;
-            if (msg.messageText !== message) return;
+        // Reject
+        reject(err);
+    };
 
-            // We have our message, find the emote
-            const pogChamp = msg.emotes.find(emote => emote.code === 'PogChamp');
-            if (!pogChamp) return;
+    // Abort if Twitch doesn't work
+    const abort = setTimeout(() => handleReject(new Error('Twitch interaction took too long (15s)')), 15 * 1000);
 
-            // We're done, clear the timeout
-            clearTimeout(abort);
+    // Define a unique key and message
+    const key = (Math.random() * 10000).toString();
+    const message = `PogChamp ${key}`;
 
-            // Disconnect and resolve with the emote ID
-            publicClient.close();
-            botClient.close();
-            console.log(pogChamp.id);
-            resolve(pogChamp.id);
-        });
+    // Process incoming messages
+    const handleMessage = async (channel, tags, msg) => {
+        if (channel !== '#' + config.TWITCH_CHANNEL) return;
+        if (tags.username !== config.TWITCH_USERNAME) return;
+        if (msg !== message) return;
 
-        // Send the message on the bot client
-        botClient.say(config.TWITCH_CHANNEL, message).catch(reject);
-    }
+        // We have our message, find the emote
+        const pogChamp = Object.keys(tags.emotes)[0];
+        if (!pogChamp) return;
 
-    // When the clients are ready, do stuff
-    publicClient.on('ready', handleReady);
-    botClient.on('ready', handleReady);
+        // Disconnect clients
+        await publicClient.disconnect().catch(handleReject);
+        console.log('Public disconnected');
+        await botClient.disconnect().catch(handleReject);
+        console.log('Bot disconnected');
 
-    // Throw if the client errors
-    publicClient.on('close', err => { if (err) reject(err); });
-    botClient.on('close', err => { if (err) reject(err); });
+        // Resolve
+        clearTimeout(abort);
+        console.log(Number(pogChamp));
+        resolve(Number(pogChamp));
+    };
+    publicClient.on('message', handleMessage);
 
     // Start the clients
-    publicClient.connect().then(() => publicClient.join(config.TWITCH_CHANNEL).catch(reject)).catch(reject);
-    botClient.connect().then(() => botClient.join(config.TWITCH_CHANNEL).catch(reject)).catch(reject);
+    await publicClient.connect().catch(handleReject);
+    console.log('Public connected');
+    await botClient.connect().catch(handleReject);
+    console.log('Bot connected');
+
+    // Send the message
+    await botClient.say(config.TWITCH_CHANNEL, message).catch(handleReject);
+    console.log('Message sent');
 });
 
 const main = async () => {
     // Get the emote (allow one retry)
     const id = await fetchFromChat().catch(e => {
         console.warn(e);
+        console.log('Running second attempt');
         return fetchFromChat();
     });
 
@@ -108,4 +123,6 @@ const main = async () => {
 };
 
 // Do the fetch
-main().then(() => {});
+main().then(() => {
+    console.log('All done');
+});
