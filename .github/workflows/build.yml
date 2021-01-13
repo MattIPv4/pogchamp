@@ -6,7 +6,7 @@ on:
       - master
   schedule:
     - cron: '0 */4 * * *'
-    - cron: '0,10,20,30 17 * * *'
+    - cron: '*/5 17 * * *' # Yes, this is very frequent, but GitHub Actions doesn't actually trigger it this often
 
 jobs:
   build-and-deploy:
