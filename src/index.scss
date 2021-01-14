@@ -1,6 +1,7 @@
 $twitch: #9146ff;
 $dark: #000;
 $light: #f0f0ff;
+$break: 768px;
 
 @mixin title($size) {
   text-align: center;
@@ -38,10 +39,9 @@ body {
   #content {
     width: 100%;
     min-height: 100vh;
-    margin: auto 1em;
     z-index: 1;
 
-    #title {
+    h1 {
       @include title(4em);
     }
 
@@ -51,8 +51,78 @@ body {
     }
   }
 
+  #history {
+    width: 100%;
+    padding: 4em 2em;
+
+    h2 {
+      @include title(3em);
+
+      text-align: start;
+      margin: 0 0 .5em;
+    }
+
+    > div {
+      display: flex;
+      flex-wrap: wrap;
+
+      @media (min-width: $break) {
+        padding: 0 2em;
+      }
+
+      > div {
+        flex: 1 1 50%;
+        padding: 1em 0;
+
+        @media (min-width: $break) {
+          padding: 1em 2em;
+        }
+
+        &:nth-child(5n),
+        &:nth-child(5n + 1),
+        &:nth-child(5n + 4) {
+          h3 {
+            color: $light;
+          }
+        }
+
+        &:nth-child(5n + 2),
+        &:nth-child(5n + 3) {
+          h3 {
+            color: $twitch;
+          }
+        }
+
+        h3 {
+          @include title(4em);
+
+          text-align: start;
+          margin: 0 0 .25em;
+        }
+
+        img {
+          width: 10em;
+          height: 10em;
+          margin: 0 2em;
+        }
+      }
+    }
+  }
+
   a {
     color: $light;
+  }
+
+  #footer {
+    margin: 1em;
+    z-index: 2;
+    font-size: .75em;
+    font-weight: 400;
+
+    &,
+    a {
+      transition: color 200ms ease-in-out;
+    }
   }
 
   &.anim-active {
@@ -63,22 +133,14 @@ body {
       right: 0;
     }
 
-    > p {
+    #footer {
       position: fixed;
       bottom: 0;
-      margin: 1em;
-      z-index: 2;
-      font-size: .75em;
-      font-weight: 400;
-
-      &,
-      a {
-        transition: color 200ms ease-in-out;
-      }
     }
   }
 
-  &.dark {
+  &.dark,
+  &.post-anim {
     background: $dark;
     color: $light;
 
@@ -89,98 +151,117 @@ body {
 
   &.post-anim {
     #content {
-      h2 {
-        @include title(5em);
+      min-height: 75vh;
+      flex-direction: column-reverse;
+      align-items: normal;
+
+      @media (min-width: $break) {
+        flex-direction: row;
       }
 
       > div {
-        padding: 2em;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        width: 100%;
 
+        @media (min-width: $break) {
+          width: 50%;
+        }
+
+        &,
+        > div {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+
+        // Text
         &:first-child {
-          min-height: 40%;
-          justify-content: flex-end;
+          > div {
+            padding: 2em;
+            width: 100%;
+            flex: 1 1 50%;
 
-          @media (min-width: 768px) {
-            min-height: 50%;
+            &:first-child {
+              flex-basis: 75%;
+              background: $twitch;
+              color: $dark;
+            }
+
+            &:last-child {
+              h2 {
+                @include title(5em);
+              }
+
+              a {
+                position: relative;
+                transition: color 150ms ease-in-out;
+
+                &:hover {
+                  color: $light;
+
+                  span {
+                    &:last-child {
+                      svg {
+                        &:first-child {
+                          top: -1.5em;
+                          right: -1.5em;
+                        }
+
+                        &:last-child {
+                          top: 0;
+                          right: 0;
+                        }
+                      }
+                    }
+                  }
+                }
+
+                span {
+                  &:last-child {
+                    position: relative;
+                    display: inline-block;
+                    width: .5em;
+                    height: .5em;
+                    margin: 0 .15em;
+                    overflow: hidden;
+
+                    svg {
+                      position: absolute;
+                      width: 100%;
+                      height: 100%;
+                      transition: top 300ms ease-in-out, right 300ms ease-in-out;
+
+                      &:first-child {
+                        top: 0;
+                        right: 0;
+                        fill: $twitch;
+                        stroke: $twitch;
+                      }
+
+                      &:last-child {
+                        top: 1.5em;
+                        right: 1.5em;
+                        fill: $light;
+                        stroke: $light;
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
 
+        // PogChamp
         &:last-child {
-          min-height: 60%;
-          padding-bottom: 4em;
-          color: $twitch;
-          background: $dark;
-          justify-content: flex-start;
-
-          @media (min-width: 768px) {
-            min-height: 50%;
-          }
-
-          a {
-            position: relative;
-            color: $light;
-            transition: color 150ms ease-in-out;
-
-            &:hover {
-              color: $twitch;
-
-              span {
-                &:last-child {
-                  svg {
-                    &:first-child {
-                      top: -1.5em;
-                      right: -1.5em;
-                    }
-
-                    &:last-child {
-                      top: 0;
-                      right: 0;
-                    }
-                  }
-                }
-              }
-            }
-
-            span {
-              &:last-child {
-                position: relative;
-                display: inline-block;
-                width: .5em;
-                height: .5em;
-                margin: 0 .15em;
-                overflow: hidden;
-
-                svg {
-                  position: absolute;
-                  width: 100%;
-                  height: 100%;
-                  transition: top 300ms ease-in-out, right 300ms ease-in-out;
-
-                  &:first-child {
-                    top: 0;
-                    right: 0;
-                    fill: $light;
-                    stroke: $light;
-                  }
-
-                  &:last-child {
-                    top: 1.5em;
-                    right: 1.5em;
-                    fill: $twitch;
-                    stroke: $twitch;
-                  }
-                }
-              }
-            }
-          }
+          padding: 2em;
+          background: $twitch;
+          color: $dark;
         }
       }
     }
 
-    > p {
+    #footer {
       color: $light;
 
       a {

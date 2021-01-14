@@ -78,7 +78,20 @@
     </div>
 </div>
 
-<p>
+<div id="history">
+    <h2>History of the PogChamp of the Day</h2>
+
+    <div>
+        <each loop="historicalPogChamp, index in historical">
+            <div>
+                <h3>{{ historicalPogChamp.date }}</h3>
+                <img src="{{ historicalPogChamp.image }}" alt="PogChamp for {{ historicalPogChamp.date }}" />
+            </div>
+        </each>
+    </div>
+</div>
+
+<p id="footer">
     Not affiliated with <a href="https://www.twitch.tv/about/" target="_blank" rel="noopener">Twitch Interactive, Inc.</a>
     Built by <a href="https://mattcowley.co.uk/" target="_blank" rel="noopener">Matt Cowley</a>, open-source on
     <a href="https://github.com/MattIPv4/pogchamp" target="_blank" rel="noopener">GitHub</a>.

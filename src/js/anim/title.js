@@ -3,7 +3,7 @@ const chevronSvg = require('../icons/chevron.svg');
 const { getElmWithText, getSubSpan, getSvgElm, waitForMillis, waitForFrame } = require('../utils');
 const { timingFunctionTitle, timingFunctionArrows } = require('../constants');
 
-module.exports = async (title, pog) => {
+module.exports = async title => {
     // Insert the top row text
     title.innerHTML = '';
     const titleTopRow = getElmWithText('span', 'PogChamp');
@@ -36,7 +36,6 @@ module.exports = async (title, pog) => {
     title.style.alignItems = 'center';
     titleTopRow.style.opacity = '0';
     titleTopRow.style.display = 'inline-block';
-    pog.style.display = 'none';
 
     // Display the top row (50ms)
     await waitForMillis(50);
