@@ -58,6 +58,6 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add build/data.json
-          git add build/latest.json
+          git add build/history.json
           git commit -m "New PogChamp data"
           git push
