@@ -1,9 +1,9 @@
 name: Update latest data
 
 on:
-#  schedule:
-#    - cron: '0 */4 * * *'
-#    - cron: '*/5 17 * * *' # Yes, this is very frequent, but GitHub Actions doesn't actually trigger it this often
+  schedule:
+    - cron: '0 */4 * * *'
+    - cron: '*/5 17 * * *' # Yes, this is very frequent, but GitHub Actions doesn't actually trigger it this often
   workflow_dispatch:
 
 jobs:
@@ -55,9 +55,9 @@ jobs:
         if: ${{ steps.update-data.outputs.updated == 'updated' }}
         run: |
           git status -s
-          git config user.name github-actions
-          git config user.email github-actions@github.com
+          git config user.name MattIPv4
+          git config user.email me@mattcowley.co.uk
           git add build/data.json
           git add build/history.json
-          git commit -m "New PogChamp data"
+          git commit -m "New PogChamp data [automated]"
           git push

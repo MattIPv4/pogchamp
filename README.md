@@ -20,7 +20,9 @@ To get around this, the [`build/fetch-emote.js`](build/fetch-emote.js) script ac
 
 This emote data is then saved to a JSON file which is [ingested by the website build process](.posthtmlrc.js), using Parcel & PostHTML.
 
-[GitHub Actions is then utilised to run the build script every 30 minutes](.github/workflows/build.yml), day and night, to ensure that the website is almost always showing the latest PogChamp emote for Twitch.
+We have two GitHub Actions workflows to help with automating this process.
+The first, [`build.yml`](.github/workflows/build.yml), will build and deploy the website using the latest data committed to the `master` branch of this repository, and runs every time a new commit is pushed.
+The second workflow, [`update.yml`](.github/workflows/update.yml), runs on a schedule and fetches the latest PogChamp emote from Twitch. If it is a new emote, it updates the [`build/data.json`](build/data.json) and [`build/history.json`](build/history.json) files with this, before committing and pushing them to the `master` branch to trigger a site build.
 
 ## License
 

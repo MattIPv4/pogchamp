@@ -18,9 +18,12 @@ const main = async () => {
     // If latest is historical latest, no-op
     if (historicalLatest.length && historicalLatest[0].id === latest.id) return '';
 
+    // Set the timestamp to the unix value for midnight of current day
+    const secondsInDay = 60 * 60 * 24;
+    latest.timestamp = Math.floor(Date.now() / 1000 / secondsInDay) * secondsInDay;
+
     // Store the history with the latest added
-    latest.timestamp = Math.round(Date.now() / 1000);
-    await fs.writeFile(path.join(__dirname, 'history.json'), JSON.stringify(historical.concat(latest), null, 2));
+    await fs.writeFile(path.join(__dirname, 'history.json'), JSON.stringify(historical.concat(latest), null, 2) + '\n');
     return 'updated';
 };
 

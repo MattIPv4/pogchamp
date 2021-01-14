@@ -119,7 +119,7 @@ const main = async () => {
     console.log(pogChamp);
 
     // Store
-    await fs.writeFile(path.join(__dirname, 'data.json'), JSON.stringify(pogChamp, null, 2));
+    await fs.writeFile(path.join(__dirname, 'data.json'), JSON.stringify(pogChamp, null, 2) + '\n');
 };
 
 // Do the fetch
