@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "Each day brings a new PogChamp emote to Twitch. View the latest PogChamp of the Day at pogchamp.today",
-  "main": "src/index.js",
+  "main": "src/js/index.js",
   "scripts": {
     "dev": "npm run build:fetch-emote && npm run dev:parcel",
     "dev:parcel": "parcel src/index.html --host 0.0.0.0",
