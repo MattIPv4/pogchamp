@@ -22,8 +22,9 @@ const main = async () => {
     const secondsInDay = 60 * 60 * 24;
     latest.timestamp = Math.floor(Date.now() / 1000 / secondsInDay) * secondsInDay;
 
-    // Store the history with the latest added
-    await fs.writeFile(path.join(__dirname, 'history.json'), JSON.stringify(historical.concat(latest), null, 2) + '\n');
+    // Store the history (oldest first) with the latest added
+    await fs.writeFile(path.join(__dirname, 'history.json'),
+        JSON.stringify(historical.concat(latest).sort((a, b) => a.timestamp - b.timestamp), null, 2) + '\n');
     return 'updated';
 };
 
