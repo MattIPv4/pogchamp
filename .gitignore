@@ -8,6 +8,5 @@ dist/
 # Node
 node_modules/
 
-# Build
-build/data.json
+# Build config
 build/config.js

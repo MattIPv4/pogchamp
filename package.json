@@ -7,8 +7,8 @@
   "scripts": {
     "dev": "npm run build:fetch-emote && npm run dev:parcel",
     "dev:parcel": "parcel src/index.html --host 0.0.0.0",
-    "build": "npm run build:fetch-emote && npm run build:parcel",
     "build:fetch-emote": "node build/fetch-emote.js",
+    "build:update-data": "node build/update-data.js",
     "build:parcel": "parcel build src/index.html"
   },
   "keywords": [],
