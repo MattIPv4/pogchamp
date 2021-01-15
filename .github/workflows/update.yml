@@ -2,8 +2,7 @@ name: Update latest data
 
 on:
   schedule:
-    - cron: '0 */4 * * *'
-    - cron: '*/5 17 * * *' # Yes, this is very frequent, but GitHub Actions doesn't actually trigger it this often
+    - cron: '*/15 17,18 * * *'
   workflow_dispatch:
 
 jobs:
