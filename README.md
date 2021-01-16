@@ -14,9 +14,13 @@ Inspired by this, I decided to create [pogchamp.today](https://pogchamp.today), 
 
 ### How it works
 
+<!--
 For some reason or another, it seems that the new limited-edition PogChamp emotes aren't revealed in the [Twitch emotes API](https://dev.twitch.tv/docs/v5/reference/chat#get-all-chat-emoticons).
 
 To get around this, the [`build/fetch-emote.js`](build/fetch-emote.js) script actually connects to a Twitch channel IRC chat and sends 'PogChamp', listening for the parsed response from Twitch which will include the emote data.
+-->
+
+The script uses the [Get Chat Emoticons by Set](https://dev.twitch.tv/docs/v5/reference/chat#get-chat-emoticons-by-set) API endpoint that Twitch provides, using the set `0` which is the global Twitch emotes set, and then filtering for the PogChamp emote.
 
 This emote data is then saved to a JSON file which is [ingested by the website build process](.posthtmlrc.js), using Parcel & PostHTML.
 
