@@ -1,8 +1,8 @@
 name: Update latest data
 
 on:
-  schedule:
-    - cron: '*/15 17,18 * * *'
+#  schedule:
+#    - cron: '*/15 17,18 * * *'
   workflow_dispatch:
 
 jobs:
