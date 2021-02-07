@@ -268,5 +268,14 @@
       "large": "https://static-cdn.jtvnw.net/emoticons/v2/305831482/default/dark/3.0"
     },
     "timestamp": 1612569600
+  },
+  {
+    "id": 305850350,
+    "img": {
+      "small": "https://static-cdn.jtvnw.net/emoticons/v2/305850350/default/dark/1.0",
+      "medium": "https://static-cdn.jtvnw.net/emoticons/v2/305850350/default/dark/2.0",
+      "large": "https://static-cdn.jtvnw.net/emoticons/v2/305850350/default/dark/3.0"
+    },
+    "timestamp": 1612656000
   }
 ]
