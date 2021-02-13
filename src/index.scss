@@ -60,6 +60,10 @@ body {
 
       text-align: start;
       margin: 0 0 .5em;
+
+      &:not(:first-of-type) {
+        margin: 2em 0 .5em;
+      }
     }
 
     > div {
@@ -104,6 +108,21 @@ body {
           width: 10em;
           height: 10em;
           margin: 0 2em;
+        }
+
+        > div {
+          margin: 4em 0 2em;
+          background: rgba($light, 0.25);
+
+          &,
+          > div {
+            height: 1em;
+            border-radius: .5em;
+          }
+
+          > div {
+            background: $twitch;
+          }
         }
       }
     }

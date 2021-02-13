@@ -79,6 +79,21 @@
 </div>
 
 <div id="history">
+    <h2>The Winner of the PogChampening</h2>
+
+    <div>
+        <div>
+            <h3>{{ winner.date }}</h3>
+            <img src="{{ winner.image }}" alt="Your new PogChamp" />
+        </div>
+        <div>
+            <div>
+                <div style="width: {{ winner.vote }}%"></div>
+            </div>
+            <h3>{{ winner.vote }}% of the vote</h3>
+        </div>
+    </div>
+
     <h2>History of the PogChamp of the Day</h2>
 
     <div>
