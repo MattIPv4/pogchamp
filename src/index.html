@@ -100,7 +100,9 @@
         <each loop="historicalPogChamp, index in historical">
             <div>
                 <h3>{{ historicalPogChamp.date }}</h3>
-                <img src="{{ historicalPogChamp.image }}" alt="PogChamp for {{ historicalPogChamp.date }}" />
+                <img src="{{ historicalPogChamp.image }}"
+                     alt="PogChamp for {{ historicalPogChamp.date }}"
+                     loading="lazy" />
             </div>
         </each>
     </div>
